@@ -1,9 +1,0 @@
-language: node_js
-node_js:
-  -"12.6.0"
-script:
-  -echo "Hello World"
-install:
-  -npm instal -g firebase-tools
-after_success:
-  -firebase deploy --token $FIREBASE_TOKEN
