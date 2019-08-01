@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "public/financeTracker/public",
     "ignore": [
       "firebase.json",
       "**/.*",
