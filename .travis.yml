@@ -12,5 +12,5 @@ deploy:
   skip_cleanup: true
   token: $FIREBASE_TOKEN
   on:
-    tags: true
+    tags: false
     all_branches: true
