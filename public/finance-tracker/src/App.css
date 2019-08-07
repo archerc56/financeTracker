@@ -1,24 +1,92 @@
-.App {
+.mainpage {
+	/*background: pink;*/
+}
+
+.pageheader {
+	background: #c2bcbc;
+	height:100%;
+	margin-top: 0px;
+}
+
+.tabrow:before {
+  z-index: 1;
+}
+
+.tabrow {
+  position: relative;
   text-align: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 24px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.tabrow:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid #AAA;
+  z-index: 1;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.tab:before,
+.tab:after {
+  position: absolute;
+  bottom: -1px;
+  width: 6px;
+  height: 6px;
+  content: " ";
 }
 
-.App-intro {
-  font-size: large;
+.tab:before {
+  left: -6px;
+  border-bottom-right-radius: 6px;
+  border-width: 0 1px 1px 0;
+  box-shadow: 2px 2px 0 red;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.tab:after {
+  right: -6px;
+  border-bottom-left-radius: 6px;
+  border-width: 0 0 1px 1px;
+  box-shadow: -2px 2px 0 red;
 }
+
+.tab:after, .tab:before {
+  border: 1px solid #AAA;
+}
+
+.tab {
+  position: relative;
+  z-index: 0;
+  border: 1px solid #AAA;
+  display: inline-block;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: linear-gradient(to bottom, #ECECEC 50%, #D1D1D1 100%);
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
+  text-shadow: 0 1px #FFF;
+  margin: 0 -5px;
+  padding: 20px 20px 20px 20px;
+}
+
+Tab.selected {
+  z-index: 2;
+  border-bottom-color: red;
+  background: #eb4034;
+}
+
+.tab.selected:before {
+  box-shadow: 2px 2px 0 #FFF;
+}
+.tab.selected:after {
+  box-shadow: -2px 2px 0 #FFF;
+}
+
+.panel {
+	height: 100%;
+	background: #c2bcbc;
+}
+	
