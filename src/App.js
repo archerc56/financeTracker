@@ -31,6 +31,9 @@ class App extends Component {
 		  case 2:
 			return (<Reports/>);
 			break;
+		  default:
+			return (<Overview/>);
+			break;
 	  }
   }
   
