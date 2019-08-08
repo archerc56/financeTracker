@@ -8,6 +8,7 @@ install:
   - npm install bootstrap
 
 script:
+  - unset CI 
   - npm run build
 deploy:
   provider: firebase
