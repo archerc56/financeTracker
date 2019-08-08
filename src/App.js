@@ -23,6 +23,7 @@ class App extends Component {
 		  </Navbar.Collapse>
 		</Navbar>
     );
+	  var x =9;
   }
 }
 
