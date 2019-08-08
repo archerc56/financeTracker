@@ -8,7 +8,7 @@ install:
   - npm install bootstrap
 
 script:
-  - CI=false npm run build
+  - proc.env.CI=false npm run build
 deploy:
   provider: firebase
   skip_cleanup: true
