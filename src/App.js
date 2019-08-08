@@ -24,16 +24,12 @@ class App extends Component {
 	  switch(this.state.tabIndex){
 		  case 0:
 			return (<Overview/>);
-			break;
 		  case 1:
 			return (<Budget/>);
-			break;
 		  case 2:
 			return (<Reports/>);
-			break;
 		  default:
 			return (<Overview/>);
-			break;
 	  }
   }
   
