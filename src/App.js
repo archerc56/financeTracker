@@ -1,44 +1,50 @@
-import React, { Component } from 'react';
-import  {BrowserRouter, Route, Switch, Redirect}  from 'react-router-dom';
-import firebase from './firebase';
-import Login from './Login';
-import Dashboard from './Dashboard';
-import ProtectedRoute from './ProtectedRoute';
-import './App.css';
-import Navigation from './Navigation';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { Component } from "react";
+import "./App.css";
+import firebase from "./firebase";
+import Dashboard from "./Dashboard";
+import Login from "./Login";
 
 class App extends Component {
   constructor() {
     super();
-    this.state = { isAuth: false};
+    this.state = {
+      user: null
+    };
+    this.authListener = this.authListener.bind(this);
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+
+  authListener() {
     firebase.auth().onAuthStateChanged(user => {
-      console.log("state changed");
-      this.setState({
-        loading: false,  // For the loader maybe
-        user, // User Details
-        isAuth: true
-      });
-      
+      console.log(user);
+      if (user) {
+        this.setState({ user });
+        localStorage.setItem("user", user.uid);
+      } else {
+        this.setState({ user: null });
+        localStorage.removeItem("user");
+      }
     });
   }
-  // componentWillReceiveProps (nextProps){
-  //   console.log('componentWillReceiveProps', nextProps);
-  //       this.setState(nextProps);
-  // }
-
-  shouldComponentUpdate (nextProps, nextState){
-    console.log('shouldComponentReceiveProps', nextProps);
-    return true;
-
-    
-  }   
 
   render() {
-    if(this.state.isAuth == true){
-      return <BrowserRouter><Redirect to='/' /><Dashboard></Dashboard></BrowserRouter>
+    if (this.state.user) {
+      return (
+        <div>
+          <Dashboard />
+        </div>
+      );
+    } else {
+      return (
+          
+        <div>
+          <Login />
+        </div>
+      );
     }
-    return <Navigation isAuth={this.state.isAuth} />;
   }
 }
 

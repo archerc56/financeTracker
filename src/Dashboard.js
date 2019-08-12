@@ -7,15 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Dashboard extends Component{
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.logOutUser = this.logOutUser.bind(this);
 	  }
 
 	logOutUser() {
-		firebase.auth().signOut().then(console.log("user logged out")).catch(error => {
-			console.log("error: ",error);
-	   });
+        firebase.auth().signOut();
+        location.replace("/")
 	}
 	   
 	   render(){

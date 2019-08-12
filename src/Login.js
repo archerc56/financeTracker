@@ -1,69 +1,83 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-import Jumbotron from 'react-bootstrap/Jumbotron';
+import Jumbotron from "react-bootstrap/Jumbotron";
 import firebase from "./firebase";
-import './Login.css';
+import "./Login.css";
 
 class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-      error: null
-    };
-    this.handleRegister = this.handleRegister.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-  }
+  constructor(props) {
+    super(props);
 
-  handleLogin = (event) => {
+    this.handleRegister = this.handleRegister.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.state = {
+      loginEmail: "",
+      loginPassword: "",
+      registerEmail: "",
+      registerPassword: ""
+    };
+  }
+  handleChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+  handleLogin(event) {
     event.preventDefault();
-    let form = event.target
-    let emailVal = form.elements.loginEmail.value;
-    let passwordVal = form.elements.loginPassword.value;
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
-  .then(function() {
     firebase
       .auth()
-      .signInWithEmailAndPassword(emailVal, passwordVal)
+      .signInWithEmailAndPassword(
+        this.state.loginEmail,
+        this.state.loginPassword
+      )
       .catch(error => {
-        console.log("error: ",error)
-      }).then(console.log("successfully logged in"));
-    })
+        console.log("error: ", error);
+      })
+      .then(console.log("successfully logged in"));
+  }
 
-    //this.props.history.push('/');
-  };
+  //this.props.history.push('/')
 
-  handleRegister = (event) => {
+  handleRegister(event) {
     event.preventDefault();
-    let form = event.target
-    let emailVal = form.elements.registerEmail.value;
-    let passwordVal = form.elements.registerPassword.value;
-    firebase.auth().createUserWithEmailAndPassword(emailVal, passwordVal).then(function (user) {
-      // get user data from the auth trigger
-      const userUid = user.user.uid; // The UID of the user.
-      var docData = {
-        stringExample: "Hello world!",
-        booleanExample: true,
-        numberExample: 3.14159265,
-        dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815")),
-        arrayExample: [5, true, "hello"],
-        nullExample: null,
-        objectExample: {
-          a: 5,
-          b: {
-            nested: "foo"
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(
+        this.state.registerEmail,
+        this.state.registerPassword
+      )
+      .then(function(user) {
+        // get user data from the auth trigger
+        const userUid = user.user.uid; // The UID of the user.
+        var docData = {
+          stringExample: "Hello world!",
+          booleanExample: true,
+          numberExample: 3.14159265,
+          dateExample: firebase.firestore.Timestamp.fromDate(
+            new Date("December 10, 1815")
+          ),
+          arrayExample: [5, true, "hello"],
+          nullExample: null,
+          objectExample: {
+            a: 5,
+            b: {
+              nested: "foo"
+            }
           }
-        }
-      };
-      //Create a new entry in the database. 
-      //TODO: revisit to potentially create a collection per user
-      firebase.firestore().collection('users').doc(userUid).collection('Transactions').doc(userUid).set(docData);
-    }).catch(alert);
+        };
+        //Create a new entry in the database.
+        //TODO: revisit to potentially create a collection per user
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(userUid)
+          .collection("Transactions")
+          .doc(userUid)
+          .set(docData);
+      })
+      .catch(alert);
   }
   render() {
     return (
@@ -73,27 +87,36 @@ class Login extends Component {
           <h4>Please Login or Create an Account</h4>
         </Jumbotron>
         <Form.Row>
-
           <Col className="loginCol">
             <h2>Login</h2>
-            <Form onSubmit={this.handleLogin}>
+            <Form>
               <Form.Row className="formRow">
                 <Form.Control
+                  value={this.state.loginEmail}
                   name="loginEmail"
                   type="email"
-                  placeholder="Email" />
+                  placeholder="Email"
+                  onChange={this.handleChange}
+                />
               </Form.Row>
               <Form.Row className="formRow">
-                <Form.Control onChange={e => this.setState({ password: e.target.value })}
+                <Form.Control
+                  value={this.state.loginPassword}
                   name="loginPassword"
                   type="password"
-                  placeholder="Password" />
+                  placeholder="Password"
+                  onChange={this.handleChange}
+                />
               </Form.Row>
 
               <div className="buttonRow">
-                <Button className="loginButton"
+                <Button
+                  className="loginButton"
                   variant="primary"
-                  type="submit">Login
+                  onClick={this.handleLogin}
+                  type="submit"
+                >
+                  Login
                 </Button>
               </div>
             </Form>
@@ -103,20 +126,25 @@ class Login extends Component {
             <Form onSubmit={this.handleRegister}>
               <Form.Row className="formRow">
                 <Form.Control
+                  value={this.state.registerEmail}
                   name="registerEmail"
                   type="email"
-                  placeholder="Email" />
+                  placeholder="Email"
+                  onChange={this.handleChange}
+                />
               </Form.Row>
               <Form.Row className="formRow">
-                <Form.Control onChange={e => this.setState({ password: e.target.value })}
+                <Form.Control
+                  value={this.state.registerPassword}
                   name="registerPassword"
                   type="password"
-                  placeholder="Password" />
+                  placeholder="Password"
+                  onChange={this.handleChange}
+                />
               </Form.Row>
               <div className="buttonRow">
-                <Button className="loginButton"
-                  variant="primary"
-                  type="submit">Create Account
+                <Button className="loginButton" variant="primary" type="submit">
+                  Create Account
                 </Button>
               </div>
             </Form>
@@ -126,4 +154,4 @@ class Login extends Component {
     );
   }
 }
-export default withRouter(Login);
+export default Login;
