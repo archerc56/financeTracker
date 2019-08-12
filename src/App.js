@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Overview from './Overview/Overview.js'
 import Budget from './Budget/Budget.js'
 import Reports from './Reports/Reports.js'
+import NetWorth from './NetWorth/NetWorth.js'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -20,6 +21,10 @@ class App extends Component {
 	});
   }
   
+  logout() {
+	  console.log('Logging out');
+  }
+  
   showTabContents(){
 	  switch(this.state.tabIndex){
 		  case 0:
@@ -28,6 +33,8 @@ class App extends Component {
 			return (<Budget/>);
 		  case 2:
 			return (<Reports/>);
+		  case 3:
+			return (<NetWorth/>);
 		  default:
 			return (<Overview/>);
 	  }
@@ -44,6 +51,11 @@ class App extends Component {
 			  <Nav.Link onClick={this.onTabChange.bind(this, 0)} >Overview</Nav.Link>
 			  <Nav.Link onClick={this.onTabChange.bind(this, 1)} >Budget</Nav.Link>
 			  <Nav.Link onClick={this.onTabChange.bind(this, 2)} >Reports</Nav.Link>
+			  <Nav.Link onClick={this.onTabChange.bind(this, 3)} >Net Worth</Nav.Link>
+			</Nav>
+			<Nav className="mr-sm-2">
+			  <Navbar.Brand>Welcome User!</Navbar.Brand>
+			  <Nav.Link onClick={this.logout.bind(this)} >Logout</Nav.Link>
 			</Nav>
 		  </Navbar.Collapse>
 		</Navbar>
