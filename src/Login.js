@@ -25,15 +25,17 @@ class Login extends Component {
     let form = event.target
     let emailVal = form.elements.loginEmail.value;
     let passwordVal = form.elements.loginPassword.value;
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+  .then(function() {
     firebase
       .auth()
       .signInWithEmailAndPassword(emailVal, passwordVal)
       .catch(error => {
-        this.setState({ error: error });
-        alert(error);
-      });
+        console.log("error: ",error)
+      }).then(console.log("successfully logged in"));
+    })
 
-    this.props.history.push('/');
+    //this.props.history.push('/');
   };
 
   handleRegister = (event) => {
@@ -62,7 +64,6 @@ class Login extends Component {
       //TODO: revisit to potentially create a collection per user
       firebase.firestore().collection('users').doc(userUid).collection('Transactions').doc(userUid).set(docData);
     }).catch(alert);
-    this.props.history.push('/');
   }
   render() {
     return (

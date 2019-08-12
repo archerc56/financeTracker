@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import React from 'react';
 const firebaseConfig = {
   apiKey: "AIzaSyAXsrMMuBjWIN_tcbFCIfHHKx1-vyzXta4",
   authDomain: "financetracker-bb7dd.firebaseapp.com",
