@@ -81,12 +81,12 @@ class Login extends Component {
     return (
       <div>
       <Container >
-        <Jumbotron className="p-5 mb-2 bg-dark text-white text-center ">
+        <Jumbotron className="shadow p-5 mb-2 bg-dark text-white text-center ">
           <h1>Welcome to FinanceTool</h1>
           <h4>Please Login or Create an Account</h4>
         </Jumbotron>
         <Form.Row>
-          <Col className="p-5 mb-2 bg-secondary text-light text-center">
+          <Col className="shadow  p-5 mb-2 bg-secondary text-light text-center">
             <h2>Login</h2>
             <Form>
               <Form.Row className="formRow">
@@ -120,7 +120,7 @@ class Login extends Component {
               </div>
             </Form>
           </Col>
-          <Col className="p-5 mb-2 bg-light text-secondary text-center">
+          <Col className="shadow p-5 mb-2 bg-light text-secondary text-center">
             <h2>Create Account</h2>
             <Form onSubmit={this.handleRegister}>
               <Form.Row className="formRow">
