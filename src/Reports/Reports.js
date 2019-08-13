@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import ExpensesByCategory from './ExpensesByCategory.js';
 import ExpensesOverTime from './ExpensesOverTime.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.css';
+import './../App.css';
 
 class Reports extends Component {
   constructor() {

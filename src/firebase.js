@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 const firebaseConfig = {
   apiKey: "AIzaSyAXsrMMuBjWIN_tcbFCIfHHKx1-vyzXta4",
   authDomain: "financetracker-bb7dd.firebaseapp.com",
@@ -8,4 +8,5 @@ const firebaseConfig = {
   messagingSenderId: "462869614931",
   appId: "1:462869614931:web:0427fbf55e7c75bc"
 };
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
+export default firebase;

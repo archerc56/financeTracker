@@ -1,67 +1,50 @@
-import React, { Component } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Overview from './Overview/Overview.js'
-import Budget from './Budget/Budget.js'
-import Reports from './Reports/Reports.js'
-import NetWorth from './NetWorth/NetWorth.js'
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { Component } from "react";
+import "./App.css";
+import firebase from "./firebase";
+import Dashboard from "./Dashboard/Dashboard";
+import Login from "./Login/Login";
 
 class App extends Component {
   constructor() {
     super();
-    this.state = { tabIndex: 0 };
+    this.state = {
+      user: null
+    };
+    this.authListener = this.authListener.bind(this);
   }
-  
-  onTabChange(i){
-	console.log("The tabIndex is: ", i);
-	this.setState({
-		tabIndex: i,
-	});
+
+  componentDidMount() {
+    this.authListener();
   }
-  
-  logout() {
-	  console.log('Logging out');
+
+  authListener() {
+    firebase.auth().onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        this.setState({ user });
+        localStorage.setItem("user", user.uid);
+      } else {
+        this.setState({ user: null });
+        localStorage.removeItem("user");
+      }
+    });
   }
-  
-  showTabContents(){
-	  switch(this.state.tabIndex){
-		  case 0:
-			return (<Overview/>);
-		  case 1:
-			return (<Budget/>);
-		  case 2:
-			return (<Reports/>);
-		  case 3:
-			return (<NetWorth/>);
-		  default:
-			return (<Overview/>);
-	  }
-  }
-  
+
   render() {
-    return (
-	<div>
-		<Navbar bg="dark" variant="dark" expand="lg">
-		  <Navbar.Brand>Finance Tracker</Navbar.Brand>
-		  <Navbar.Toggle aria-controls="basic-navbar-nav" />
-		  <Navbar.Collapse id="basic-navbar-nav">
-			<Nav className="mr-auto">
-			  <Nav.Link onClick={this.onTabChange.bind(this, 0)} >Overview</Nav.Link>
-			  <Nav.Link onClick={this.onTabChange.bind(this, 1)} >Budget</Nav.Link>
-			  <Nav.Link onClick={this.onTabChange.bind(this, 2)} >Reports</Nav.Link>
-			  <Nav.Link onClick={this.onTabChange.bind(this, 3)} >Net Worth</Nav.Link>
-			</Nav>
-			<Nav className="mr-sm-2">
-			  <Navbar.Brand>Welcome User!</Navbar.Brand>
-			  <Nav.Link onClick={this.logout.bind(this)} >Logout</Nav.Link>
-			</Nav>
-		  </Navbar.Collapse>
-		</Navbar>
-		{this.showTabContents()}
-		</div>
-    );
+    if (this.state.user) {
+      return (
+        <div>
+          <Dashboard />
+        </div>
+      );
+    } else {
+      return (
+          
+        <div className="bg">
+          <Login />
+        </div>
+      );
+    }
   }
 }
 
