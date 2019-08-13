@@ -82,7 +82,7 @@ class Login extends Component {
       <div>
       <Container >
         <Jumbotron className="shadow p-5 mb-2 bg-dark text-white text-center ">
-          <h1>Welcome to FinanceTool</h1>
+          <h1>Welcome to Finance Tracker</h1>
           <h4>Please Login or Create an Account</h4>
         </Jumbotron>
         <Form.Row>
