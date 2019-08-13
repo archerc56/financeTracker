@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import firebase from "./firebase";
-import Dashboard from "./Dashboard";
-import Login from "./Login";
+import Dashboard from "./Dashboard/Dashboard";
+import Login from "./Login/Login";
 
 class App extends Component {
   constructor() {
@@ -40,7 +40,7 @@ class App extends Component {
     } else {
       return (
           
-        <div>
+        <div className="bg">
           <Login />
         </div>
       );

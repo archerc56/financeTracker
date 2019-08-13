@@ -1,0 +1,41 @@
+.Dashboard {
+  text-align: center;
+}
+
+.Dashboard-logo {
+  animation: Dashboard-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.Dashboard-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: rgb(165, 5, 5);
+}
+
+.Dashboard-intro {
+  font-size: large;
+}
+
+@keyframes Dashboard-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.wrapper--large {
+	margin: 60px;
+}
+
+.wrapper--medium {
+	margin: 40px;
+}
+
+.wrapper--small {
+	margin: 20px;
+}
+
+.border {
+	border: 5px solid black;
+	padding: 30px;
+}

@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import firebase from "./firebase";
+import firebase from "../firebase";
 import "./Login.css";
 
 class Login extends Component {
@@ -37,8 +37,6 @@ class Login extends Component {
       })
       .then(console.log("successfully logged in"));
   }
-
-  //this.props.history.push('/')
 
   handleRegister(event) {
     event.preventDefault();
@@ -81,13 +79,14 @@ class Login extends Component {
   }
   render() {
     return (
-      <Container>
-        <Jumbotron className="welcomeMessage">
+      <div>
+      <Container >
+        <Jumbotron className="p-5 mb-2 bg-dark text-white text-center ">
           <h1>Welcome to FinanceTool</h1>
           <h4>Please Login or Create an Account</h4>
         </Jumbotron>
         <Form.Row>
-          <Col className="loginCol">
+          <Col className="p-5 mb-2 bg-secondary text-light text-center">
             <h2>Login</h2>
             <Form>
               <Form.Row className="formRow">
@@ -112,7 +111,7 @@ class Login extends Component {
               <div className="buttonRow">
                 <Button
                   className="loginButton"
-                  variant="primary"
+                  variant="info"
                   onClick={this.handleLogin}
                   type="submit"
                 >
@@ -121,7 +120,7 @@ class Login extends Component {
               </div>
             </Form>
           </Col>
-          <Col className="registerCol">
+          <Col className="p-5 mb-2 bg-light text-secondary text-center">
             <h2>Create Account</h2>
             <Form onSubmit={this.handleRegister}>
               <Form.Row className="formRow">
@@ -143,7 +142,7 @@ class Login extends Component {
                 />
               </Form.Row>
               <div className="buttonRow">
-                <Button className="loginButton" variant="primary" type="submit">
+                <Button className="loginButton" variant="info" type="submit">
                   Create Account
                 </Button>
               </div>
@@ -151,6 +150,7 @@ class Login extends Component {
           </Col>
         </Form.Row>
       </Container>
+      </div>
     );
   }
 }
