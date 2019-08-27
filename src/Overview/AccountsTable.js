@@ -5,9 +5,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 class AccountsTable extends Component {
   constructor() {
     super();
-    this.state = { tabIndex: 0 };
+    this.state = { };
   }
   render() {
+	  
+	const mapTransaction = (transaction) => {
+		return (
+			<tr>
+				<td>{transaction.date}</td>
+				<td>{transaction.description}</td>
+				<td>{transaction.category}</td>
+				<td>{transaction.cost}</td>
+			</tr>
+		);
+	};
+	
     return (
 		<div>
 			<Table striped bordered hover>
@@ -20,24 +32,7 @@ class AccountsTable extends Component {
 				</tr>
 			  </thead>
 			  <tbody>
-				<tr>
-				  <td>1/3/2019</td>
-				  <td>Snacks</td>
-				  <td>Food</td>
-				  <td>10.00</td>
-				</tr>
-				<tr>
-				  <td>1/2/2019</td>
-				  <td>Electric</td>
-				  <td>Utilities</td>
-				  <td>40.00</td>
-				</tr>
-				<tr>
-				  <td>1/1/2019</td>
-				  <td>Rent</td>
-				  <td>Housing</td>
-				  <td>1000.00</td>
-				</tr>
+				{ this.props.transactions.map(mapTransaction) }
 			  </tbody>
 			</Table>
 		</div>

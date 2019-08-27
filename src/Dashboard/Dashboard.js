@@ -5,6 +5,7 @@ import Overview from '../Overview/Overview.js'
 import Budget from '../Budget/Budget.js'
 import Reports from '../Reports/Reports.js'
 import NetWorth from '../NetWorth/NetWorth.js'
+import Goals from '../Goals/Goals.js'
 import firebase from '../firebase';
 import './Dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -37,6 +38,8 @@ class Dashboard extends Component {
 				return (<Reports />);
 			case 3:
 				return (<NetWorth />);
+			case 4:
+				return (<Goals />);
 			default:
 				return (<Overview />);
 		}
@@ -54,6 +57,7 @@ class Dashboard extends Component {
 							<Nav.Link onClick={this.onTabChange.bind(this, 1)} >Budget</Nav.Link>
 							<Nav.Link onClick={this.onTabChange.bind(this, 2)} >Reports</Nav.Link>
 							<Nav.Link onClick={this.onTabChange.bind(this, 3)} >Net Worth</Nav.Link>
+							<Nav.Link onClick={this.onTabChange.bind(this, 4)} >Goals</Nav.Link>
 						</Nav>
 						<Nav className="mr-sm-2">
 							<Navbar.Brand>Welcome User!</Navbar.Brand>
