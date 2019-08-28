@@ -45,37 +45,7 @@ class Login extends Component {
       .createUserWithEmailAndPassword(
         this.state.registerEmail,
         this.state.registerPassword
-      )
-      .then(function(user) {
-        // get user data from the auth trigger
-        const userUid = user.user.uid; // The UID of the user.
-        var docData = {
-          stringExample: "Hello world!",
-          booleanExample: true,
-          numberExample: 3.14159265,
-          dateExample: firebase.firestore.Timestamp.fromDate(
-            new Date("December 10, 1815")
-          ),
-          arrayExample: [5, true, "hello"],
-          nullExample: null,
-          objectExample: {
-            a: 5,
-            b: {
-              nested: "foo"
-            }
-          }
-        };
-        //Create a new entry in the database.
-        //TODO: revisit to potentially create a collection per user
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(userUid)
-          .collection("Transactions")
-          .doc(userUid)
-          .set(docData);
-      })
-      .catch(alert);
+      ).catch(alert);
   }
   render() {
     return (
