@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import firebase from "../firebase";
+import DatabaseUtil from "./../Database/DatabaseUtil";
 import "./Login.css";
 
 class Login extends Component {
@@ -45,7 +46,9 @@ class Login extends Component {
       .createUserWithEmailAndPassword(
         this.state.registerEmail,
         this.state.registerPassword
-      ).catch(alert);
+      ).then(function(){
+        DatabaseUtil.createUserDatabaseEntry();
+      }).catch(alert);
   }
   render() {
     return (

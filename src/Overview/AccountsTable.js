@@ -15,7 +15,7 @@ class AccountsTable extends Component {
 				<td>{transaction.date}</td>
 				<td>{transaction.description}</td>
 				<td>{transaction.category}</td>
-				<td>{transaction.amount}</td>
+				<td>{"$" + transaction.amount.toFixed(2)}</td>
 			</tr>
 		);
 	};
@@ -32,7 +32,7 @@ class AccountsTable extends Component {
 				</tr>
 			  </thead>
 			  <tbody>
-				{ this.props.transactions.map(mapTransaction) }
+				{ this.props.transactions && this.props.transactions.map(mapTransaction) }
 			  </tbody>
 			</Table>
 		</div>

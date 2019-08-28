@@ -12,20 +12,33 @@ import DatabaseUtil from "./../Database/DatabaseUtil";
 import '../App.css';
 
 class Overview extends Component {
+
 	constructor() {
 		super();
 		this.state = {
 			accounts: [],
 		};
+		this.idCount = 1;
 		this.handleAddAccount = this.handleAddAccount.bind(this);
 		this.handleAddTransaction = this.handleAddTransaction.bind(this);
+		this.componentDidMount = this.componentDidMount.bind(this);
 	}
 
+	/**
+	 * Handles the user clicking add transaction
+	 */
 	handleAddTransaction(){
+
+		let currAccount = null;
+
+		//TODO: Add form to get transaction info from user
+
+		//The processing in this if statement just gets the currently selected account
+		//This can likely be improved
 		if(this.state.accounts.length > 0){
 			let copyAccounts = this.state.accounts;
 			let urlAccountId = window.location.hash;
-			let currAccount = null;
+			
 
 			if(urlAccountId){
 				urlAccountId = urlAccountId.replace('#link','');
@@ -36,84 +49,47 @@ class Overview extends Component {
 			else{
 				currAccount = copyAccounts[0];
 			}
+		}
 
-			if(currAccount){
-				var userUid = firebase.auth().currentUser.uid;
-				var docData = {
-					name: 'exampleTransaction', date: '1/3/2019', description: 'Snacks', category: 'Food', amount: '10.00' 
-				};
-				DatabaseUtil.addTransactionToDatabase(currAccount, docData);
-				
+		//Once the current account has been found, add the transaction to the database
+		if(currAccount){
 
-			}
-			this.setState({
-				accounts : copyAccounts
-			})
+			//TODO: Remove once form to add transaction data is added. 
+			//The structure of the transaction object isn't set by the database, so fields can be added, removed, and renamed
+			//at will. 
+			var transactionData = {
+				date: '8/28/2019', description: 'Hamburger', category: 'Food', amount: 1000.00
+			};
+			DatabaseUtil.addTransactionToDatabase(currAccount, transactionData);
 		}
 		
 	}
 
+	/**
+	 * Handles the user clicking add account
+	 */
 	handleAddAccount() {
-		let accountsCopy = this.state.accounts.slice();
-		let newAccount = {
-			name: 'Checking Account',
-			id: '1',
-		}
 
-		accountsCopy.push(newAccount);
-
-		this.setState({
-			accounts: accountsCopy
-		});
+		//TODO: Add form to get new account name from user
+		DatabaseUtil.addAccountToDatabase("Checking Account", this.idCount.toString(10));
+		this.idCount++
 	}
 
 	componentDidMount() {
-		// Get a reference to the database service
-		/* 	var database = firebase.database();
-			var userId = firebase.auth().currentUser.uid;
-			var starCountRef = database.ref('posts/' + postId + '/starCount');
-			starCountRef.on('value', function(snapshot) {
-			  updateStarCount(postElement, snapshot.val());
-			}); */
-		//this will be where we do the api call to load the data but for now we will set the state here
-		// this.setState({        //Create a new entry in the database.
-		// 	//TODO: revisit to potentially create a collection per user
-		// 	//firebase
-		// 	/*  .firestore()
-		// 	 .collection("users")
-		// 	 .doc(userUid).set(); */
-		// 	//.collection("Transactions")
-		// 	//.doc(userUid)
-		// 	//.set(docData);
-		// 	//})
-		// 	// .catch(alert);
-		// 	accounts: [
-		// 		{
-		// 			name: 'Checking Account',
-		// 			id: '1',
-		// 			transactions: [
-		// 				{ date: '1/3/2019', description: 'Snacks', category: 'Food', cost: '10.00' },
-		// 				{ date: '1/2/2019', description: 'Electric', category: 'Utilities', cost: '40.00' },
-		// 				{ date: '1/1/2019', description: 'Rent', category: 'Housing', cost: '1000.00' },
-		// 			]
-		// 		},
-		// 		{
-		// 			name: 'Savings Account',
-		// 			id: '2',
-		// 			transactions: [
-		// 				{ date: '1/7/2019', description: 'Interest', category: 'Income', cost: '10.00' },
-		// 				{ date: '1/6/2019', description: 'Paycheck', category: 'Income', cost: '4000.00' },
-		// 			]
-		// 		},
-		// 	],
-		// });
+		const self = this;
+		var userUid = firebase.auth().currentUser.uid;
+
+		//Adds a listener to the user's section of the database. Whenever the section is updated, the page will rerender
+		firebase.firestore().collection("users").doc(userUid).onSnapshot(function(doc) {
+			console.log("Current data: ", doc.data());
+			self.setState({
+				accounts: doc.data().Accounts
+			});
+		});
 	}
 
-
 	render() {
-		
-		const mapAccount = (account) => {
-
+		const mapAccount = (account) => {			
 			return (
 				<ListGroup.Item action href={`#link${account.id}`} >
 					{account.name}
@@ -122,29 +98,14 @@ class Overview extends Component {
 		};
 
 		const mapTransactions = ((account) => {
-			let transactions = DatabaseUtil.getTransactionsFromAccountPromise(account).then(function (querySnapshot) {
-				var doc = null;
-				var transactions = [];
-				for(doc of querySnapshot.docs){
-	
-					// doc.data() is never undefined for query doc snapshots
-					console.log(doc.id, " =>nnn ", doc.data());
-					transactions.push(doc.data());
-				}
-			});
-			if (transactions.then){
-				return null;
-			}
-			return (
-				
+			return (				
 				<Tab.Pane eventKey={`#link${account.id}`}>
 					<AccountsTable
-						transactions={transactions}
-					/>
-					
+						transactions={account.transactions}
+					/>					
 				</Tab.Pane>
 			);
-		}).bind(this);
+		});
 
 		return (
 			<div className={'wrapper--large'}>
