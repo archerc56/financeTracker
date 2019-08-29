@@ -5,89 +5,134 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import AccountsTable from'./AccountsTable.js';
+import AccountsTable from './AccountsTable.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from "../firebase";
+import DatabaseUtil from "./../Database/DatabaseUtil";
 import '../App.css';
 
 class Overview extends Component {
-  constructor() {
-    super();
-    this.state = { 
-		accounts: [],
-	};
-  }
-  
-  componentDidMount() {
-	  //this will be where we do the api call to load the data but for now we will set the state here
-	  this.setState({
-		  accounts: [ 
-			{
-				name:'Checking Account', 
-				id: '1', 
-				transactions: [
-					{date: '1/3/2019', description: 'Snacks', category: 'Food', cost: '10.00'},
-					{date: '1/2/2019', description: 'Electric', category: 'Utilities', cost: '40.00'},
-					{date: '1/1/2019', description: 'Rent', category: 'Housing', cost: '1000.00'},
-				]
-			},
-			{
-				name:'Savings Account', 
-				id: '2', 
-				transactions: [
-					{date: '1/7/2019', description: 'Interest', category: 'Income', cost: '10.00'},
-					{date: '1/6/2019', description: 'Paycheck', category: 'Income', cost: '4000.00'},
-				]
-			},
-		],
-	  });
-  }
-  
-  
-  render() {
-	
-	const mapAccount = (account) => {
+
+	constructor() {
+		super();
+		this.state = {
+			accounts: [],
+		};
+		this.idCount = 1;
+		this.handleAddAccount = this.handleAddAccount.bind(this);
+		this.handleAddTransaction = this.handleAddTransaction.bind(this);
+		this.componentDidMount = this.componentDidMount.bind(this);
+	}
+
+	/**
+	 * Handles the user clicking add transaction
+	 */
+	handleAddTransaction(){
+
+		let currAccount = null;
+
+		//TODO: Add form to get transaction info from user
+
+		//The processing in this if statement just gets the currently selected account
+		//This can likely be improved
+		if(this.state.accounts.length > 0){
+			let copyAccounts = this.state.accounts;
+			let urlAccountId = window.location.hash;
+			
+
+			if(urlAccountId){
+				urlAccountId = urlAccountId.replace('#link','');
+				currAccount = copyAccounts.find(function(account) {
+					return account.id === urlAccountId;
+				});
+			}
+			else{
+				currAccount = copyAccounts[0];
+			}
+		}
+
+		//Once the current account has been found, add the transaction to the database
+		if(currAccount){
+
+			//TODO: Remove once form to add transaction data is added. 
+			//The structure of the transaction object isn't set by the database, so fields can be added, removed, and renamed
+			//at will. 
+			var transactionData = {
+				date: '8/28/2019', description: 'Hamburger', category: 'Food', amount: 1000.00
+			};
+			DatabaseUtil.addTransactionToDatabase(currAccount, transactionData);
+		}
+		
+	}
+
+	/**
+	 * Handles the user clicking add account
+	 */
+	handleAddAccount() {
+
+		//TODO: Add form to get new account name from user
+		DatabaseUtil.addAccountToDatabase("Checking Account", this.idCount.toString(10));
+		this.idCount++
+	}
+
+	componentDidMount() {
+		const self = this;
+		var userUid = firebase.auth().currentUser.uid;
+
+		//Adds a listener to the user's section of the database. Whenever the section is updated, the page will rerender
+		firebase.firestore().collection("users").doc(userUid).onSnapshot(function(doc) {
+			console.log("Current data: ", doc.data());
+			self.setState({
+				accounts: doc.data().Accounts
+			});
+		});
+	}
+
+	render() {
+		const mapAccount = (account) => {			
+			return (
+				<ListGroup.Item action href={`#link${account.id}`} >
+					{account.name}
+				</ListGroup.Item>
+			);
+		};
+
+		const mapTransactions = ((account) => {
+			return (				
+				<Tab.Pane eventKey={`#link${account.id}`}>
+					<AccountsTable
+						transactions={account.transactions}
+					/>					
+				</Tab.Pane>
+			);
+		});
+
 		return (
-			<ListGroup.Item action href={`#link${account.id}`} >
-				{account.name}
-			</ListGroup.Item>
+			<div className={'wrapper--large'}>
+				<ButtonToolbar className={'wrapper--small'}>
+					<Button variant="dark" size="lg" onClick={this.handleAddAccount}>Add Account</Button>
+				</ButtonToolbar>
+				<Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+					<Row>
+						<Col sm={2}>
+							<ListGroup>
+								{this.state.accounts.map(mapAccount)}
+							</ListGroup>
+						</Col>
+						<Col sm={10}>
+							<Tab.Content>
+								<ButtonToolbar className={'wrapper--small'}>
+									{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.handleAddTransaction}>Add Transaction</Button>}	
+									
+								</ButtonToolbar>
+								{this.state.accounts.map(mapTransactions)}
+							</Tab.Content>
+						</Col>
+					</Row>
+				</Tab.Container>
+			</div>
 		);
-	};
-	
-	const mapTransactions = (account) => {
-		return (
-			<Tab.Pane eventKey={`#link${account.id}`}>
-				<AccountsTable
-					transactions={account.transactions}
-				/>
-			</Tab.Pane>
-		);
-	};
-	
-    return (
-	<div className={'wrapper--large'}>
-		<ButtonToolbar className={'wrapper--small'}>
-			<Button variant="dark" size="lg">Add Account</Button>
-		</ButtonToolbar>
-		<Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-		  <Row>
-			<Col sm={2}>
-			  <ListGroup>
-				{ this.state.accounts.map(mapAccount) }
-			  </ListGroup>
-			</Col>
-			<Col sm={10}>
-			  <Tab.Content>
-			  <ButtonToolbar className={'wrapper--small'}>
-				  <Button variant="dark" size="lg">Add Transaction</Button>
-			  </ButtonToolbar>
-				{ this.state.accounts.map(mapTransactions) }
-			  </Tab.Content>
-			</Col>
-		  </Row>
-		</Tab.Container>
-		</div>
-    );
-  }
+	}
 }
 
 export default Overview;
