@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import AccountsTable from './AccountsTable.js';
+import AddAccountModal from './AddAccountModal.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from "../firebase";
 import DatabaseUtil from "./../Database/DatabaseUtil";
@@ -17,9 +18,13 @@ class Overview extends Component {
 		super();
 		this.state = {
 			accounts: [],
+			showAccountModal: false,
+			showTransactionModal: false,
 		};
 		this.idCount = 1;
-		this.handleAddAccount = this.handleAddAccount.bind(this);
+		this.showAddAccountModal = this.showAddAccountModal.bind(this);
+		this.cancelAddAccount = this.cancelAddAccount.bind(this);
+		this.submitAddAccount = this.submitAddAccount.bind(this);
 		this.handleAddTransaction = this.handleAddTransaction.bind(this);
 		this.componentDidMount = this.componentDidMount.bind(this);
 	}
@@ -68,11 +73,27 @@ class Overview extends Component {
 	/**
 	 * Handles the user clicking add account
 	 */
-	handleAddAccount() {
-
-		//TODO: Add form to get new account name from user
-		DatabaseUtil.addAccountToDatabase("Checking Account", this.idCount.toString(10));
-		this.idCount++
+	showAddAccountModal() {
+		this.setState({
+			showAccountModal: true,
+		});
+	}
+	
+	cancelAddAccount() {
+		console.log("Cancel Add Account...");
+		this.setState({
+			showAccountModal: false,
+		});
+	}
+	
+	submitAddAccount(accountName) {
+		//add account to DB
+		DatabaseUtil.addAccountToDatabase(accountName, this.idCount.toString(10));
+		this.idCount++;
+		//close the modal
+		this.setState({
+			showAccountModal: false,
+		});
 	}
 
 	componentDidMount() {
@@ -108,28 +129,35 @@ class Overview extends Component {
 		});
 
 		return (
-			<div className={'wrapper--large'}>
-				<ButtonToolbar className={'wrapper--small'}>
-					<Button variant="dark" size="lg" onClick={this.handleAddAccount}>Add Account</Button>
-				</ButtonToolbar>
-				<Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-					<Row>
-						<Col sm={2}>
-							<ListGroup>
-								{this.state.accounts.map(mapAccount)}
-							</ListGroup>
-						</Col>
-						<Col sm={10}>
-							<Tab.Content>
-								<ButtonToolbar className={'wrapper--small'}>
-									{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.handleAddTransaction}>Add Transaction</Button>}	
-									
-								</ButtonToolbar>
-								{this.state.accounts.map(mapTransactions)}
-							</Tab.Content>
-						</Col>
-					</Row>
-				</Tab.Container>
+			<div>
+				<div className={'wrapper--large'}>
+					<ButtonToolbar className={'wrapper--small'}>
+						<Button variant="dark" size="lg" onClick={this.showAddAccountModal}>Add Account</Button>
+					</ButtonToolbar>
+					<Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+						<Row>
+							<Col sm={2}>
+								<ListGroup>
+									{this.state.accounts.map(mapAccount)}
+								</ListGroup>
+							</Col>
+							<Col sm={10}>
+								<Tab.Content>
+									<ButtonToolbar className={'wrapper--small'}>
+										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.handleAddTransaction}>Add Transaction</Button>}	
+										
+									</ButtonToolbar>
+									{this.state.accounts.map(mapTransactions)}
+								</Tab.Content>
+							</Col>
+						</Row>
+					</Tab.Container>
+				</div>
+				<AddAccountModal
+					show={this.state.showAccountModal}
+					onCancel={this.cancelAddAccount}
+					onSubmit={this.submitAddAccount}>
+				</AddAccountModal>
 			</div>
 		);
 	}
