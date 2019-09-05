@@ -14,8 +14,6 @@ class Reports extends Component {
     this.state = {  };
   }
   
-  
-  
   render() {
     return (
 	<div className={'wrapper--large'}>
@@ -24,10 +22,10 @@ class Reports extends Component {
 			<Col sm={2}>
 			  <ListGroup>
 				<ListGroup.Item action href="#link1">
-				  Expenses By Category
+				  Spending Per Category By Account
 				</ListGroup.Item>
 				<ListGroup.Item action href="#link2">
-				  Expenses Over Time
+				  Monthly Spending By Account
 				</ListGroup.Item>
 			  </ListGroup>
 			</Col>

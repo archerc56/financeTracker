@@ -63,7 +63,11 @@ class ExpensesByCategory extends Component {
       });
     });
   }
-  
+
+  /**
+   * Handles when the account is changed from the drop down
+   * @param {Object} selectedOption 
+   */
   onAccountChange(selectedOption) {
     let data = [["Category", "Amount"],];
     if (selectedOption.label === "All Accounts") {
