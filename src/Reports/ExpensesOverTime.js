@@ -17,7 +17,7 @@ class ExpensesOverTime extends Component {
 
   componentDidMount() {
     const self = this;
-    var userUid = firebase.auth().currentUser.uid;
+    const userUid = firebase.auth().currentUser.uid;
 
     //Adds a listener to the user's section of the database. Whenever the section is updated, the page will rerender
     firebase.firestore().collection("users").doc(userUid).onSnapshot(function (doc) {
@@ -31,26 +31,10 @@ class ExpensesOverTime extends Component {
   onAccountChange(selectedOption) {
     let defaultColor = "color: gray";
     //initialize each month to have a value of 0
-    let data =[[],["January"],
-    ["February"],
-    ["March"],
-    ["April" ],
-    ["May"],
-    ["June" ],
-    ["July" ],
-    ["August"],
-    ["September" ],
-    ["October"],
-    ["November"],
-    ["December"]];
+    let data =[];
 
-    if (selectedOption.label === "All Accounts") {
-
-      let accounts = selectedOption.value;
-      let account;
-      let accountNames = ["Accounts"];
-      let transaction;
-      let tempData = [        ["January"],
+    if (selectedOption.label === "Monthly") {
+      data =[[],["January"],
       ["February"],
       ["March"],
       ["April" ],
@@ -62,11 +46,26 @@ class ExpensesOverTime extends Component {
       ["October"],
       ["November"],
       ["December"]];
-      for (account of accounts) {
+      let account;
+      let accountNames = ["Accounts"];
+      let transaction;
+      let tempData = [["January"],
+      ["February"],
+      ["March"],
+      ["April" ],
+      ["May"],
+      ["June" ],
+      ["July" ],
+      ["August"],
+      ["September" ],
+      ["October"],
+      ["November"],
+      ["December"]];
+      for (account of this.state.accounts) {
         accountNames.push(account.name);
         for (transaction of account.transactions) {
           let amount = transaction.amount;
-          var date = new Date(transaction.date);
+          let date = new Date(transaction.date);
           let month = date.getMonth();
           if (month !== NaN) {
             tempData[month + 1].push(parseFloat(amount));
@@ -89,6 +88,60 @@ class ExpensesOverTime extends Component {
       }
       accountNames.push({role: 'annotation'})
       data[0] = accountNames;
+    }
+
+    else if (selectedOption.label === "Daily"){
+      data =[[],["SUN"],
+      ["MON"],
+      ["TUE"],
+      ["WED" ],
+      ["THR"],
+      ["FRI" ],
+      ["SAT" ]];
+
+      let accounts = this.state.accounts;
+      let account;
+      let accountNames = ["Accounts"];
+      let transaction;
+      let tempData = [["SUN"],
+      ["MON"],
+      ["TUE"],
+      ["WED" ],
+      ["THR"],
+      ["FRI" ],
+      ["SAT" ]];
+      for (account of this.state.accounts) {
+        accountNames.push(account.name);
+        for (transaction of account.transactions) {
+          let amount = transaction.amount;
+          let date = new Date(transaction.date);
+          let day = date.getDay();
+          if (day !== NaN) {
+            tempData[day + 1].push(parseFloat(amount));
+          }
+        }
+        let tempDataItem;
+        for(tempDataItem of tempData){
+          if(tempDataItem.length === 1){
+            tempDataItem.push(0.0);
+          }
+        }
+        let j =1;
+        for(j=1; j<=7;j++){
+          data[j].push(tempData[j-1][1]);
+        }
+      }
+      let j =1;
+      for(j=1; j<=7;j++){
+        data[j].push('');
+      }
+      accountNames.push({role: 'annotation'})
+      data[0] = accountNames;
+
+    }
+
+    else if (selectedOption.label === "Annually"){
+
     }
 
     else {
@@ -153,11 +206,18 @@ class ExpensesOverTime extends Component {
   render() {
     let account;
     let options = [];
-    for (account of this.state.accounts) {
+   /*  for (account of this.state.accounts) {
       options.push({ value: account, label: account.name });
-    }
-    if (options.length >= 1) {
-      options.push({ value: this.state.accounts, label: "All Accounts" })
+    } */
+
+   
+
+    ///Instead of having the accounts as options, do it over time (weekly, monthly, annual) for all accounts
+    if (this.state.accounts.length >= 1) {
+
+      options.push({ value: "daily", label: "Daily", });
+      options.push({ value: "monthly", label: "Monthly" });
+      options.push({ value: "annually", label: "Annually" });
     }
     return (
       <div>
