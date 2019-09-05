@@ -34,5 +34,6 @@ body, html {
 
 .border {
 	border: 5px solid black;
-	padding: 30px;
+  padding: 30px;
+  margin-bottom: 10px;
 }
