@@ -100,12 +100,14 @@ class DatabaseUtil {
      * Adds a new goal to the database
      * 
      * @param {String} description - description of the goal
+     * @param {int} id - id of the goal
      */
-    static addGoalToDatabase(description) {
+    static addGoalToDatabase(description, id) {
         
         //Creates an goal object from the given description
         const goal =  {
             description: description,
+            id: id,
 			complete: false,
         }
         
@@ -120,26 +122,19 @@ class DatabaseUtil {
     }
 	
 	/**
-     * Update a goal in the database
+     * Update a goal list in the database with the passed in goals
      * 
-     * @param {String} description - description of the goal
-	 * @param {Boolean} complete - completion of the goal
+     * @param {Object[]} goals - Goals to replace the existing goals
      */
-    static updateGoalInDatabase(description, complete) {
-        
-        //Creates an goal object from the given description
-        const goal =  {
-            description: description,
-			complete: complete,
-        }
+    static updateGoalsInDatabase(goals) {
         
         //Current user's id
         const userUid = firebase.auth().currentUser.uid;
 
-        //Adds the goal to the user's section of the database
+        //Replaces the Goals in the database with the passed in list of goals
         firebase.firestore().collection("users")
             .doc(userUid).update({
-                Goals: firebase.firestore.FieldValue.arrayUnion(goal)
+                Goals: goals
         });
     }
 

@@ -12,6 +12,7 @@ class Goals extends Component {
 		super();
 		this.state = { 
 			showGoalModal: false,
+			goals: [],
 		};
 		
 		this.showAddGoalModal = this.showAddGoalModal.bind(this);
@@ -38,12 +39,15 @@ class Goals extends Component {
 	}
 
 	/**
+	 *
 	 * Handles the user submitting an added goal 
+	 *
+	 * @param {String} goalDescription description of the new goal
 	 */
 	submitAddGoal(goalDescription) {
 		
 		//add account to DB
-		DatabaseUtil.addGoalToDatabase(goalDescription);
+		DatabaseUtil.addGoalToDatabase(goalDescription, this.state.goals.length);
 		
 		//close the modal
 		this.setState({
@@ -52,11 +56,23 @@ class Goals extends Component {
 	}
 	
 	/**
+	 *
 	 * Handles the user submitting an added goal 
+	 *
+	 * @param {int} goalID - ID of the goal being toggled
 	 */
-	submitToggleGoal(goalDescription, goalComplete) {
-		//update goal in DB
-		DatabaseUtil.updateGoalInDatabase(goalDescription, !goalComplete);
+	submitToggleGoal(goalID) {
+		let tempGoals = this.state.goals.slice();
+		let goal;
+		for(goal of tempGoals){
+			if(goal.id === goalID){
+				goal.complete = !goal.complete;
+			}
+		}
+
+		//Update the goals in the database
+		DatabaseUtil.updateGoalsInDatabase(tempGoals);
+
 	}
 	
 	componentDidMount() {
@@ -76,7 +92,7 @@ class Goals extends Component {
 		const mapGoals = (goal) => {			
 			return (
 				<tr>
-					<td><input type='checkbox' checked={goal.complete} onChange={this.submitToggleGoal.bind(this, goal.description, goal.complete)}/></td>
+					<td><input type='checkbox' checked={goal.complete} onChange={this.submitToggleGoal.bind(this, goal.id)}/></td>
 					<td>{goal.description}</td>
 				</tr>
 			);
