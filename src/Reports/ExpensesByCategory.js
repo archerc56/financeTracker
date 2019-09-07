@@ -45,7 +45,7 @@ class ExpensesByCategory extends Component {
     super();
     this.state = {
       accounts: [],
-      chartData: [["Category", "Amount"],]
+      chartData: [["Category", "Amount"]]
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onAccountChange = this.onAccountChange.bind(this);
@@ -69,7 +69,7 @@ class ExpensesByCategory extends Component {
    * @param {Object} selectedOption 
    */
   onAccountChange(selectedOption) {
-    let data = [["Category", "Amount"],];
+    let data = [["Category", "Amount"]];
     if (selectedOption.label === "All Accounts") {
       let accounts = selectedOption.value;
       let account;
@@ -78,7 +78,7 @@ class ExpensesByCategory extends Component {
           let transaction;
 
           for (transaction of account.transactions) {
-            let amount = transaction.amount;
+            let amount = parseFloat(transaction.amount);
             let category = transaction.category;
             let existingItem;
             let categoryExists = false;
@@ -104,7 +104,7 @@ class ExpensesByCategory extends Component {
         let transaction;
 
         for (transaction of account.transactions) {
-          let amount = transaction.amount;
+          let amount = parseFloat(transaction.amount);
           let category = transaction.category;
           let existingItem;
           let categoryExists = false;
@@ -156,6 +156,8 @@ class ExpensesByCategory extends Component {
           width={"100%"}
           height={"400px"}
           legend_toggle
+
+          rootProps={{ 'data-testid': '1' }}
         />}
 
       </div>

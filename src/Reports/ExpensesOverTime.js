@@ -69,29 +69,6 @@ class ExpensesOverTime extends Component {
       }
     }
 
-    //If there are transactions for more than 2 different months, show the min and max months by color
-    if (foundMonths.length > 2) {
-      let minMonthIndex = 1;
-      let minSpending = data[1][1];
-      let maxMonthIndex = 12;
-      let maxSpending = data[12][1];
-      let i;
-      for (i = 1; i < data.length; i++) {
-        let monthSpending = data[i][1];
-        if (monthSpending < minSpending && monthSpending !== 0) {
-          minMonthIndex = i;
-          minSpending = monthSpending;
-        }
-
-        if (monthSpending > maxSpending) {
-          maxMonthIndex = i;
-          maxSpending = monthSpending;
-        }
-      }
-      data[minMonthIndex][2] = "color: green";
-      data[maxMonthIndex][2] = "color: red";
-    }
-
     this.setState({
       chartData: data,
     });

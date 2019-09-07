@@ -11,10 +11,12 @@ class AddTransactionModal extends Component {
   constructor() {
     super();
     this.state = { };
-	this.categories = ['Deposit', 'Housing', 'Food', 'Utilities'];
+	this.defaultCategories = ['Deposit', 'Housing', 'Food', 'Utilities'];
   }
   render() {
-	  
+	if(this.props.categories){
+		this.defaultCategories = this.props.categories;
+	}  
 	const mapCategories = ((category) => {
 		return (				
 			<option>{category}</option>
@@ -63,7 +65,7 @@ class AddTransactionModal extends Component {
 						</Form.Label>
 						<Col sm={10}>
 						  <Form.Control as="select" id='newTransactionCategoryBox'>
-							{this.categories.map(mapCategories)}
+							{this.defaultCategories.map(mapCategories)}
 						  </Form.Control>
 						</Col>
 					</Form.Group>

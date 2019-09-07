@@ -21,6 +21,7 @@ class Overview extends Component {
 			accounts: [],
 			showAccountModal: false,
 			showTransactionModal: false,
+			categories: []
 		};
 		this.showAddAccountModal = this.showAddAccountModal.bind(this);
 		this.cancelAddAccount = this.cancelAddAccount.bind(this);
@@ -141,6 +142,18 @@ class Overview extends Component {
 				accounts: doc.data().Accounts
 			});
 		});
+
+		var docRef = firebase.firestore().collection("ValidCategories").doc("Categories");
+
+		docRef.get().then(function(doc){
+			if(doc.exists){
+				self.setState({
+					categories: doc.data().categoryList
+				});
+			}
+		});
+
+
 	}
 
 	render() {
@@ -195,7 +208,8 @@ class Overview extends Component {
 				<AddTransactionModal
 					show={this.state.showTransactionModal}
 					onCancel={this.cancelTransactionAccount}
-					onSubmit={this.submitAddTransaction}>
+					onSubmit={this.submitAddTransaction}
+					categories={this.state.categories}>
 				</AddTransactionModal>
 			</div>
 		);
