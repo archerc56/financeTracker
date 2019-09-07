@@ -14,6 +14,10 @@ class Dashboard extends Component {
 	constructor() {
 		super();
 		this.state = { tabIndex: 0 };
+		
+		const userEmail = firebase.auth().currentUser.email;
+		const username = userEmail.substr(0, userEmail.indexOf('@'));
+		this.welcomeMessage = `Welcome ${username}!`;
 	}
 
 	onTabChange(i) {
@@ -60,7 +64,7 @@ class Dashboard extends Component {
 							<Nav.Link onClick={this.onTabChange.bind(this, 4)} >Goals</Nav.Link>
 						</Nav>
 						<Nav className="mr-sm-2">
-							<Navbar.Brand>Welcome User!</Navbar.Brand>
+							<Navbar.Brand>{this.welcomeMessage}</Navbar.Brand>
 							<Nav.Link onClick={this.logOutUser.bind(this)} >Logout</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
