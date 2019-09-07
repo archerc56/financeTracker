@@ -178,8 +178,7 @@ class Overview extends Component {
 							<Col sm={10}>
 								<Tab.Content>
 									<ButtonToolbar className={'wrapper--small'}>
-										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.showAddTransactionModal}>Add Transaction</Button>}	
-										
+										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.showAddTransactionModal}>Add Transaction</Button>}		
 									</ButtonToolbar>
 									{this.state.accounts.map(mapTransactions)}
 								</Tab.Content>

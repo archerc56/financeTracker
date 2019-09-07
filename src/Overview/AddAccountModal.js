@@ -14,7 +14,7 @@ class AddAccountModal extends Component {
   render() {
 	  
 	const handleSubmit = event => {
-			const name = document.getElementById("newAccountNameBox").value
+			const name = document.getElementById('newAccountNameBox').value
 			this.props.onSubmit(name);
 	};
 	
@@ -25,7 +25,7 @@ class AddAccountModal extends Component {
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
-					<Form.Group as={Row} controlId="formHorizontalAccountName">
+					<Form.Group as={Row} controlId='formHorizontalAccountName'>
 					<Form.Label column sm={2}>
 					  Account Name
 					</Form.Label>
@@ -36,10 +36,10 @@ class AddAccountModal extends Component {
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="secondary" onClick={this.props.onCancel}>
+				<Button variant='secondary' onClick={this.props.onCancel}>
 					Close
 				</Button>
-				<Button type="submit" variant="primary" onClick={handleSubmit}>
+				<Button type='submit' variant='primary' onClick={handleSubmit}>
 					Save Changes
 				</Button>
 			</Modal.Footer>
