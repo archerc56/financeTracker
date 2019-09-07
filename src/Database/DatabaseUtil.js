@@ -94,8 +94,12 @@ class DatabaseUtil {
 
         //Creates an empty Accounts array that will be used to store all the user's accounts
         let accountData = {
-            Accounts: []
-        }
+            Accounts: [{
+            name: 'Checking',
+            id: '1',
+            transactions:[],
+        },]
+        };
 
         firebase.firestore().collection("users").doc(userUid).set(accountData);
     }

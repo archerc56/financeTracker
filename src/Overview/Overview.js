@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import AccountsTable from './AccountsTable.js';
 import AddAccountModal from './AddAccountModal.js';
+import AddTransactionModal from './AddTransactionModal.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from "../firebase";
 import DatabaseUtil from "./../Database/DatabaseUtil";
@@ -21,22 +22,76 @@ class Overview extends Component {
 			showAccountModal: false,
 			showTransactionModal: false,
 		};
-		this.idCount = 1;
 		this.showAddAccountModal = this.showAddAccountModal.bind(this);
 		this.cancelAddAccount = this.cancelAddAccount.bind(this);
 		this.submitAddAccount = this.submitAddAccount.bind(this);
-		this.handleAddTransaction = this.handleAddTransaction.bind(this);
+		this.showAddTransactionModal = this.showAddTransactionModal.bind(this);
+		this.cancelTransactionAccount = this.cancelTransactionAccount.bind(this);
+		this.submitAddTransaction = this.submitAddTransaction.bind(this);
 		this.componentDidMount = this.componentDidMount.bind(this);
+	}
+	
+	/**
+	 * Handles the user clicking add account
+	 */
+	showAddAccountModal() {
+		this.setState({
+			showAccountModal: true,
+		});
+	}
+	
+	/**
+	 * Handles the user cancelling add account
+	 */
+	cancelAddAccount() {
+		this.setState({
+			showAccountModal: false,
+		});
+	}
+	
+	/**
+	 * Handles the user submitting an added account 
+	 */
+	submitAddAccount(accountName) {
+		//create new and unique (hopefully) id for the account
+		const min = 2;
+		const max = 500;
+		const id = Math.trunc(Math.random() * (+max - +min) + +min);
+		
+		//add account to DB
+		DatabaseUtil.addAccountToDatabase(accountName, id.toString(10));
+		console.log(id);
+		//close the modal
+		this.setState({
+			showAccountModal: false,
+		});
+	}
+	
+	/**
+	 * Handles the user clicking add transaction
+	 */
+	showAddTransactionModal() {
+		console.log('showing add transaction modal...');
+		this.setState({
+			showTransactionModal: true,
+		});
+	}
+	
+	/**
+	 * Handles the user cancelling add account
+	 */
+	cancelTransactionAccount() {
+		this.setState({
+			showTransactionModal: false,
+		});
 	}
 
 	/**
 	 * Handles the user clicking add transaction
 	 */
-	handleAddTransaction(){
+	submitAddTransaction(date, description, category, amount){
 
 		let currAccount = null;
-
-		//TODO: Add form to get transaction info from user
 
 		//The processing in this if statement just gets the currently selected account
 		//This can likely be improved
@@ -58,43 +113,22 @@ class Overview extends Component {
 
 		//Once the current account has been found, add the transaction to the database
 		if(currAccount){
-
-			//TODO: Remove once form to add transaction data is added. 
 			//The structure of the transaction object isn't set by the database, so fields can be added, removed, and renamed
 			//at will. 
 			var transactionData = {
-				date: '8/28/2019', description: 'Hamburger', category: 'Food', amount: 1000.00
+				date: date, description: description, category: category, amount: amount
 			};
 			DatabaseUtil.addTransactionToDatabase(currAccount, transactionData);
 		}
 		
-	}
-
-	/**
-	 * Handles the user clicking add account
-	 */
-	showAddAccountModal() {
-		this.setState({
-			showAccountModal: true,
-		});
-	}
-	
-	cancelAddAccount() {
-		console.log("Cancel Add Account...");
-		this.setState({
-			showAccountModal: false,
-		});
-	}
-	
-	submitAddAccount(accountName) {
-		//add account to DB
-		DatabaseUtil.addAccountToDatabase(accountName, this.idCount.toString(10));
-		this.idCount++;
 		//close the modal
 		this.setState({
-			showAccountModal: false,
+			showTransactionModal: false,
 		});
+		
 	}
+
+	
 
 	componentDidMount() {
 		const self = this;
@@ -112,7 +146,7 @@ class Overview extends Component {
 	render() {
 		const mapAccount = (account) => {			
 			return (
-				<ListGroup.Item action href={`#link${account.id}`} >
+				<ListGroup.Item key={account.id} action href={`#link${account.id}`} >
 					{account.name}
 				</ListGroup.Item>
 			);
@@ -144,7 +178,7 @@ class Overview extends Component {
 							<Col sm={10}>
 								<Tab.Content>
 									<ButtonToolbar className={'wrapper--small'}>
-										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.handleAddTransaction}>Add Transaction</Button>}	
+										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.showAddTransactionModal}>Add Transaction</Button>}	
 										
 									</ButtonToolbar>
 									{this.state.accounts.map(mapTransactions)}
@@ -158,6 +192,11 @@ class Overview extends Component {
 					onCancel={this.cancelAddAccount}
 					onSubmit={this.submitAddAccount}>
 				</AddAccountModal>
+				<AddTransactionModal
+					show={this.state.showTransactionModal}
+					onCancel={this.cancelTransactionAccount}
+					onSubmit={this.submitAddTransaction}>
+				</AddTransactionModal>
 			</div>
 		);
 	}

@@ -10,12 +10,16 @@ class AccountsTable extends Component {
   render() {
 	  
 	const mapTransaction = (transaction) => {
+		let amountColor = 'black';
+		if(transaction.category == 'Deposit' || transaction.category == 'Income'){
+			amountColor = 'blue';
+		}
 		return (
 			<tr>
 				<td>{transaction.date}</td>
 				<td>{transaction.description}</td>
 				<td>{transaction.category}</td>
-				<td>{"$" + transaction.amount.toFixed(2)}</td>
+				<td style={{color:amountColor}}>{"$" + Number(transaction.amount).toFixed(2)}</td>
 			</tr>
 		);
 	};
