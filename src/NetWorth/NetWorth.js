@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import firebase from "../firebase";
-import DatabaseUtil from "./../Database/DatabaseUtil";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
@@ -37,7 +36,7 @@ class NetWorth extends Component {
 			let totalTransactionAmount = 0;
 			account.transactions.forEach((transaction) => {
 				//add transactions whose category is 'Deposit' or 'Income'
-				if(transaction.category == 'Deposit' || transaction.category == 'Income'){
+				if(transaction.category === 'Deposit' || transaction.category === 'Income'){
 					totalTransactionAmount += transaction.amount;
 				}
 				//subtract all other transactions
