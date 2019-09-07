@@ -11,7 +11,7 @@ class AccountsTable extends Component {
 	  
 	const mapTransaction = (transaction) => {
 		let amountColor = 'black';
-		if(transaction.category == 'Deposit' || transaction.category == 'Income'){
+		if(transaction.category === 'Deposit' || transaction.category === 'Income'){
 			amountColor = 'blue';
 		}
 		return (

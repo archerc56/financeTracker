@@ -4,7 +4,6 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class AddTransactionModal extends Component {
@@ -19,7 +18,7 @@ class AddTransactionModal extends Component {
 	}  
 	const mapCategories = ((category) => {
 		return (				
-			<option>{category}</option>
+			<option key={category}>{category}</option>
 		);
 	});
 	  

@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class AddAccountModal extends Component {
+class AddGoalModal extends Component {
   constructor() {
     super();
     this.state = { };
@@ -14,24 +14,26 @@ class AddAccountModal extends Component {
   render() {
 	  
 	const handleSubmit = event => {
-			const name = document.getElementById('newAccountNameBox').value
-			this.props.onSubmit(name);
+			const description = document.getElementById('newGoalDescriptionBox').value
+			this.props.onSubmit(description);
 	};
 	
     return (
 		<Modal show={this.props.show} onHide={this.props.onCancel}>
 			<Modal.Header closeButton>
-				<Modal.Title>Add New Account</Modal.Title>
+				<Modal.Title>Add New Goal</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
-					<Form.Group as={Row} controlId='formHorizontalAccountName'>
-					<Form.Label column sm={2}>
-					  Account Name
-					</Form.Label>
-					<Col sm={10}>
-					  <Form.Control id='newAccountNameBox' />
-					</Col>
+					<Form.Group as={Row} controlId='formHorizontalGoalDescription'>
+						<Col sm={2}>
+							<Form.Label>
+							  Goal Description
+							</Form.Label>
+						</Col>
+						<Col sm={10}>
+							<Form.Control as="textarea" rows="5" id='newGoalDescriptionBox' />
+						</Col>
 					</Form.Group>
 				</Form>
 			</Modal.Body>
@@ -40,7 +42,7 @@ class AddAccountModal extends Component {
 					Close
 				</Button>
 				<Button type='submit' variant='primary' onClick={handleSubmit}>
-					Save Changes
+					Save Goal
 				</Button>
 			</Modal.Footer>
 		</Modal>
@@ -48,7 +50,7 @@ class AddAccountModal extends Component {
   }
 }
 
-export default AddAccountModal;
+export default AddGoalModal;
 
 
 

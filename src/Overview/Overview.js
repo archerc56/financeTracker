@@ -137,7 +137,6 @@ class Overview extends Component {
 
 		//Adds a listener to the user's section of the database. Whenever the section is updated, the page will rerender
 		firebase.firestore().collection("users").doc(userUid).onSnapshot(function(doc) {
-			console.log("Current data: ", doc.data());
 			self.setState({
 				accounts: doc.data().Accounts
 			});
@@ -167,7 +166,7 @@ class Overview extends Component {
 
 		const mapTransactions = ((account) => {
 			return (				
-				<Tab.Pane eventKey={`#link${account.id}`}>
+				<Tab.Pane key={account.id} eventKey={`#link${account.id}`}>
 					<AccountsTable
 						transactions={account.transactions}
 					/>					
@@ -191,8 +190,7 @@ class Overview extends Component {
 							<Col sm={10}>
 								<Tab.Content>
 									<ButtonToolbar className={'wrapper--small'}>
-										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.showAddTransactionModal}>Add Transaction</Button>}	
-										
+										{this.state.accounts.length > 0 && <Button variant="dark" size="lg" onClick={this.showAddTransactionModal}>Add Transaction</Button>}		
 									</ButtonToolbar>
 									{this.state.accounts.map(mapTransactions)}
 								</Tab.Content>
