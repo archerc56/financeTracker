@@ -120,6 +120,32 @@ class DatabaseUtil {
     }
 	
 	/**
+     * Adds a new budget to the database
+     * 
+     * @param {String} month - month of the budget
+	 * @param {String} year - year of the budget
+	 * @param {Object} budgetCategories - array of objects showing category and amount allotted
+     */
+    static addBudgetToDatabase(month, year, budgetCategories) {
+        
+        //Creates an budget object from the given month, year, and budgetCategories
+        const budget =  {
+            month: month,
+			year: year,
+			budgetCategories: budgetCategories,
+        }
+        
+        //Current user's id
+        const userUid = firebase.auth().currentUser.uid;
+
+        //Adds the goal to the user's section of the database
+        firebase.firestore().collection("users")
+            .doc(userUid).update({
+                Budgets: firebase.firestore.FieldValue.arrayUnion(budget)
+        });
+    }
+	
+	/**
      * Update a goal in the database
      * 
      * @param {String} description - description of the goal
@@ -160,6 +186,7 @@ class DatabaseUtil {
 					transactions:[],
 				},
 			],
+			Budgets:[],
 			Goals: [],
         };
 

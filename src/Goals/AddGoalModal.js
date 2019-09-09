@@ -42,7 +42,7 @@ class AddGoalModal extends Component {
 					Close
 				</Button>
 				<Button type='submit' variant='primary' onClick={handleSubmit}>
-					Save Goal
+					Add Goal
 				</Button>
 			</Modal.Footer>
 		</Modal>
