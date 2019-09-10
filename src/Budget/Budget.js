@@ -14,6 +14,7 @@ class Budget extends Component {
 		this.state = {
 			accounts: [],
 			budgets: [],
+			categories: [],
 			showBudgetModal: false,
 		};
 		
@@ -46,7 +47,7 @@ class Budget extends Component {
 	submitAddBudget(budgetCategories) {
 		//get the current month and year
 		let today = new Date();
-		let currentMonth = today.getMonth(); 
+		let currentMonth = today.getMonth()+1; 
 		let currentYear = today.getFullYear();
 		
 		//add account to DB
@@ -69,12 +70,22 @@ class Budget extends Component {
 				budgets: doc.data().Budgets,
 			});
 		});
+		
+		var docRef = firebase.firestore().collection("ValidCategories").doc("Categories");
+
+		docRef.get().then(function(doc){
+			if(doc.exists){
+				self.setState({
+					categories: doc.data().categoryList
+				});
+			}
+		});
 	}
 	  
 	render() {	
 		//get the current month and year
 		let today = new Date();
-		let currentMonth = today.getMonth(); 
+		let currentMonth = today.getMonth()+1; 
 		let currentYear = today.getFullYear();
 		
 		let budgetView = (
@@ -85,7 +96,8 @@ class Budget extends Component {
 				<AddBudgetModal
 					show={this.state.showBudgetModal}
 					onCancel={this.cancelAddBudget}
-					onSubmit={this.submitAddBudget}>
+					onSubmit={this.submitAddBudget}
+					categories={this.state.categories}>
 				</AddBudgetModal>
 			</div>
 		);
