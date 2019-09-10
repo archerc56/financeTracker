@@ -37,11 +37,11 @@ class NetWorth extends Component {
 			account.transactions.forEach((transaction) => {
 				//add transactions whose category is 'Deposit' or 'Income'
 				if(transaction.category === 'Deposit' || transaction.category === 'Income'){
-					totalTransactionAmount += transaction.amount;
+					totalTransactionAmount += parseFloat(transaction.amount);
 				}
 				//subtract all other transactions
 				else{
-					totalTransactionAmount -= transaction.amount;
+					totalTransactionAmount -= parseFloat(transaction.amount);
 				}
 			});
 			

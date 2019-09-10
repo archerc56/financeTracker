@@ -10,7 +10,6 @@ class AddBudgetModal extends Component {
   constructor() {
     super();
     this.state = { };
-	this.categories = ['Deposit', 'Housing', 'Food', 'Utilities']; //TODO change to DB call
   }
   render() {
 	  
@@ -30,10 +29,13 @@ class AddBudgetModal extends Component {
 	const handleSubmit = event => {
 		const budgetCategories = [];
 		
-		this.categories.forEach((category) => {	
+		this.props.categories.forEach((category) => {	
 			const categoryAmount = document.getElementById(`newTransaction${category}Box`).value;
 			
-			budgetCategories.push({category: categoryAmount});
+			budgetCategories.push({
+				name : category,
+				amount: categoryAmount
+			});
 		});
 		
 		this.props.onSubmit(budgetCategories);
@@ -46,7 +48,7 @@ class AddBudgetModal extends Component {
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
-					{ this.categories && this.categories.map(mapCategoriestoFormFields) }
+					{ this.props.categories && this.props.categories.map(mapCategoriestoFormFields) }
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>

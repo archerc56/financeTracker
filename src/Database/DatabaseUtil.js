@@ -62,7 +62,7 @@ class DatabaseUtil {
                 }
 
                 //Overwrites the existing Accounts with the updated version
-                transaction.set(accountDocRef, { Accounts: accounts });
+                transaction.update(accountDocRef, { Accounts: accounts });
             });
         }).then(function() {
             console.log("Transaction successfully committed!");
@@ -135,7 +135,7 @@ class DatabaseUtil {
         const budget =  {
             month: month,
 			year: year,
-			budgetCategories: budgetCategories,
+			categories: budgetCategories,
         }
         
         //Current user's id
