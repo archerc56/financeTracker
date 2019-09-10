@@ -40,7 +40,7 @@ class AddAccountModal extends Component {
 					Close
 				</Button>
 				<Button type='submit' variant='primary' onClick={handleSubmit}>
-					Save Changes
+					Add Account
 				</Button>
 			</Modal.Footer>
 		</Modal>

@@ -83,7 +83,7 @@ class AddTransactionModal extends Component {
 					Close
 				</Button>
 				<Button type="submit" variant="primary" onClick={handleSubmit}>
-					Save Changes
+					Add Transaction
 				</Button>
 			</Modal.Footer>
 		</Modal>
