@@ -90,7 +90,7 @@ class ExpensesByCategory extends Component {
               }
             }
 
-            if (!categoryExists) {
+            if (!categoryExists && category !== 'Deposit') {
               data.push([category, amount]);
             }
           }
@@ -116,7 +116,7 @@ class ExpensesByCategory extends Component {
             }
           }
 
-          if (!categoryExists) {
+          if (!categoryExists && category !== 'Deposit') {
             data.push([category, amount]);
           }
         }
