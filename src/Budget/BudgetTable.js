@@ -41,12 +41,16 @@ class AccountsTable extends Component {
 		let calculatedPercentageUsed = this.calculateExpensesPercentageUsed(budgetEntry.name, budgetEntry.amount);
 		//determine the color of the progress bar based on the expenses for the month
 		let progressColor = 'success';
-		if(calculatedPercentageUsed > 100) {
+		if(budgetEntry.name === 'Deposit'){
+			progressColor='info';
+		}
+		else if(calculatedPercentageUsed > 100) {
 			progressColor = 'danger';
 		}
 		else if(calculatedPercentageUsed > 75) {
 			progressColor= 'warning';
 		}
+		
 		return (
 			<tr>
 			  <td>{budgetEntry.name}</td>

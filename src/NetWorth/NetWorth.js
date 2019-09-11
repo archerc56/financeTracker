@@ -81,7 +81,7 @@ class NetWorth extends Component {
 					{ this.state.accounts && this.state.accounts.map(mapAccountTotals) }
 					<tr>
 						<td><b>TOTAL</b></td>
-						<td style={{color:this.netWorthColor}}>{"$ " + Number(this.totalNetWorth).toFixed(2)}</td>
+						<td style={{color:this.netWorthColor}}><b>{"$ " + Number(this.totalNetWorth).toFixed(2)}</b></td>
 					</tr>
 				  </tbody>
 				</Table>
