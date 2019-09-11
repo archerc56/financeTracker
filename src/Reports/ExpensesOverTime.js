@@ -60,9 +60,10 @@ class ExpensesOverTime extends Component {
         let amount = transaction.amount;
         var date = new Date(transaction.date);
         let month = date.getMonth();
-        if (!isNaN(month)) {
+        let category = transaction.category;
+        if (!isNaN(month) && category !== 'Deposit') {
           data[month + 1][1] += parseFloat(amount);
-          if (!foundMonths.includes(month)) {
+          if (!foundMonths.includes(month) ) {
             foundMonths.push(month);
           }
         }
